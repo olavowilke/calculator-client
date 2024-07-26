@@ -12,11 +12,6 @@ import NotFoundPage from './pages/NotFoundPage';
 const AppContent = () => {
     const location = useLocation();
 
-    // Determine if the current path is for the NotFoundPage
-    const showNavbar =
-        location.pathname !== '*' ||
-        location.pathname !== '/';
-
     return (
         <AuthProvider>
             <SnackbarProvider>

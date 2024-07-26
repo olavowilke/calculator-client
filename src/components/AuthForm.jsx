@@ -1,4 +1,3 @@
-// src/components/AuthForm.jsx
 import React, {useState} from 'react';
 import {Box, Button, Container, TextField} from '@mui/material';
 import {useNavigate} from 'react-router-dom';

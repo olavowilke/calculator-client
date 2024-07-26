@@ -1,5 +1,5 @@
 import React from 'react';
-import Calculator from '../components/Calculator'; // Adjust the import path according to your file structure
+import Calculator from '../components/Calculator';
 
 const NewOperationPage = () => {
     return (
