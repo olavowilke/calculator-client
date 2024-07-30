@@ -1,24 +1,24 @@
-import React, {useState} from 'react';
-import {Box, Button, Container, TextField} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
-import {useAuth} from '../context/AuthContext.jsx';
-import {useSnackbar} from '../context/SnackbarContext.jsx';
-import api from "../config/axiosConfig.js";
+import React, { useState } from 'react';
+import { Box, Button, Container, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useSnackbar } from '../context/SnackbarContext';
+import api from "../config/axiosConfig.tsx";
+import { AxiosResponse } from "axios";
 
-
-const AuthForm = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const AuthForm: React.FC = () => {
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const navigate = useNavigate();
-    const {login} = useAuth();
-    const {showSnackbar} = useSnackbar();
+    const { login } = useAuth();
+    const { showSnackbar } = useSnackbar();
 
-    const handleLogin = async () => {
+    const handleLogin = async (): Promise<void> => {
         try {
-            const response = await api.post('/auth/login', {username, password});
+            const response: AxiosResponse<any, any> = await api.post('/auth/login', { username, password });
             login(response.data.token, response.data.balance);
             navigate('/new-operation');
-        } catch (error) {
+        } catch (error: any) {
             showSnackbar(error.response?.data?.message || 'Login failed');
         }
     };

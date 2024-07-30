@@ -1,9 +1,9 @@
 import React from 'react';
-import {Box, Button, Container, Typography} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
+import { Box, Button, Container, Typography } from '@mui/material';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
-const NotFoundPage = () => {
-    const navigate = useNavigate();
+const NotFoundPage: React.FC = () => {
+    const navigate: NavigateFunction = useNavigate();
 
     const handleGoHome = () => {
         navigate('/new-operation');

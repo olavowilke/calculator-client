@@ -1,15 +1,15 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Routes, useLocation} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import RecordsPage from './pages/RecordsPage';
+import { SnackbarProvider } from './context/SnackbarContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import NotFoundPage from './pages/NotFoundPage';
 import NewOperationPage from './pages/NewOperationPage';
 import Navbar from './components/Navbar';
-import RecordsPage from "./pages/RecordsPage.jsx";
-import {SnackbarProvider} from "./context/SnackbarContext.jsx";
-import {AuthProvider} from "./context/AuthContext.jsx";
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import NotFoundPage from './pages/NotFoundPage';
 
-const AppContent = () => {
+const AppContent: React.FC = () => {
     const location = useLocation();
 
     return (
@@ -31,7 +31,7 @@ const AppContent = () => {
     );
 };
 
-function App() {
+const App: React.FC = () => {
     return (
         <Router>
             <AppContent/>
