@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useState} from "react";
 import Particles, {initParticlesEngine} from "@tsparticles/react";
-import {loadSlim} from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
+import {loadSlim} from "@tsparticles/slim";
 
 const ParticlesBackground = () => {
     const [init, setInit] = useState(false);
@@ -14,7 +14,6 @@ const ParticlesBackground = () => {
     }, []);
 
     const particlesLoaded = (container) => {
-        console.log(container);
     };
 
     const options = useMemo(

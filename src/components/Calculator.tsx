@@ -1,59 +1,58 @@
-import React, {useState} from 'react';
-import {Box, Button, Container, Grid, MenuItem, TextField, Typography} from '@mui/material';
+import React, { ChangeEvent, useState } from 'react';
+import { Box, Button, Container, Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { useSnackbar } from '../context/SnackbarContext';
+import { useAuth } from '../context/AuthContext';
+import api from '../config/axiosConfig.tsx';
+import { AxiosResponse } from "axios";
 
-import {useSnackbar} from "../context/SnackbarContext.jsx";
-import {useAuth} from "../context/AuthContext.jsx";
-import api from "../config/axiosConfig.js";
-
-const Calculator = () => {
-    const [param1, setParam1] = useState('');
-    const [param2, setParam2] = useState('');
-    const [operation, setOperation] = useState('');
-    const [result, setResult] = useState('');
+const Calculator: React.FC = () => {
+    const [param1, setParam1] = useState<string>('');
+    const [param2, setParam2] = useState<string>('');
+    const [operation, setOperation] = useState<string>('');
+    const [result, setResult] = useState<string>('');
     const {setBalance} = useAuth();
     const {showSnackbar} = useSnackbar();
 
-    const handleOperationChange = (e) => {
-        setOperation(e.target.value);
+    const handleOperationChange = (e: ChangeEvent<{ value: unknown }>) => {
+        setOperation(e.target.value as string);
         if (e.target.value === 'square_root') {
             setParam2('');
         }
     };
 
-    const handleCalculate = async () => {
+    const handleCalculate = async (): Promise<void> => {
         try {
-            const response = await api.post('/records', {
+            const response: AxiosResponse<any, any> = await api.post('/records', {
                 param1: parseFloat(param1),
                 param2: param2 ? parseFloat(param2) : null,
                 operationType: operation
             }, {
                 headers: {
-                    Authorization: localStorage.getItem('token'),
+                    Authorization: localStorage.getItem('token') || '',
                 },
             });
             setResult(response.data.data.operation_response);
             setBalance(response.data.data.user_balance);
-        } catch (error) {
+        } catch (error: any) {
             setResult('Error');
-            showSnackbar(error.response.data.message);
+            showSnackbar(error.response?.data?.message || 'Error occurred');
         }
     };
 
     const handleRandomString = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await api.post('/records', {
+            const response: AxiosResponse<any, any> = await api.post('/records', {
                 operationType: 'random_string'
             }, {
                 headers: {
-                    Authorization: localStorage.getItem('token'),
+                    Authorization: localStorage.getItem('token') || '',
                 },
             });
             setResult(response.data.data.operation_response);
             setBalance(response.data.data.user_balance);
-        } catch (error) {
+        } catch (error: any) {
             setResult('Error');
-            showSnackbar(error.response.data.message);
+            showSnackbar(error.response?.data?.message || 'Error occurred');
         }
     };
 
@@ -130,7 +129,9 @@ const Calculator = () => {
                     <TextField
                         label="Result"
                         value={result}
-                        readOnly
+                        inputProps={
+                            {readOnly: true,}
+                        }
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -140,6 +141,5 @@ const Calculator = () => {
         </Container>
     );
 };
-
 
 export default Calculator;

@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+// src/pages/RecordsPage.tsx
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Container,
@@ -15,17 +16,25 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import {Delete as DeleteIcon, Search as SearchIcon} from '@mui/icons-material';
-import {useSnackbar} from "../context/SnackbarContext.jsx";
-import api from "../config/axiosConfig.js";
+import { Delete as DeleteIcon, Search as SearchIcon } from '@mui/icons-material';
+import { useSnackbar } from "../context/SnackbarContext";
+import api from "../config/axiosConfig";
 
-const RecordsPage = () => {
-    const [records, setRecords] = useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [search, setSearch] = useState('');
-    const [totalPages, setTotalPages] = useState(0);
-    const [count, setCount] = useState(0);
+interface Record {
+    _id: string;
+    operation_id: {
+        type: string;
+    };
+    operation_response: string;
+}
+
+const RecordsPage: React.FC = () => {
+    const [records, setRecords] = useState<Record[]>([]);
+    const [page, setPage] = useState<number>(0);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [search, setSearch] = useState<string>('');
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [count, setCount] = useState<number>(0);
     const {showSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -41,40 +50,40 @@ const RecordsPage = () => {
                     search,
                 },
                 headers: {
-                    Authorization: localStorage.getItem('token'),
+                    Authorization: localStorage.getItem('token') || '',
                 },
             });
             setRecords(response.data.data);
             setTotalPages(response.data.totalPages);
             setCount(response.data.count);
         } catch (error) {
-            showSnackbar(error.response.data.message);
+            showSnackbar(error.response?.data?.message || 'Error fetching records');
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: string) => {
         try {
             await api.delete(`/records/${id}`, {
                 headers: {
-                    Authorization: localStorage.getItem('token'),
+                    Authorization: localStorage.getItem('token') || '',
                 },
             });
             fetchRecords();
         } catch (error) {
-            showSnackbar(error.response.data.message);
+            showSnackbar(error.response?.data?.message || 'Error deleting record');
         }
     };
 
-    const handleSearchChange = (e) => {
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
     };
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
 

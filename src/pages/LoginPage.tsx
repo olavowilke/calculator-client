@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import ParticlesBackground from "../components/ParticlesBackground.jsx";
-import {useAuth} from '../context/AuthContext.jsx';
+import { useAuth } from '../context/AuthContext';
 
-const LoginPage = () => {
-    const navigate = useNavigate();
+const LoginPage: React.FC = () => {
+    const navigate: NavigateFunction = useNavigate();
     const {user} = useAuth();
 
     useEffect(() => {
@@ -15,7 +15,6 @@ const LoginPage = () => {
     }, [user, navigate]);
 
     return (
-
         <div className="min-h-screen flex flex-col">
             <ParticlesBackground/>
             <div className="flex-grow flex items-center justify-center">
